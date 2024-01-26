@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <meta charset="UTF-8">
+      <title>Add Category</title>
+      <link rel="stylesheet" href="/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/dashboard-style.css">
+  </head>
+  <body class="overflow-hidden">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-7">
+            <section>
+              <div class="d-flex align-items-center" style="height: 100vh;">
+                <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 50rem;">
+                  <nav class="navbar navbar-light">
+                    <div class="container-fluid">
+                      <h1 class="navbar-brand h1" style="letter-spacing: 1px;">Categories Available</h1>
+                    </div>
+                  </nav>
+                  <div>
+                    <ul th:each="category: ${categories}">
+                      <li th:text="${category.name}" class="text-dark capitalized"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-sm-4">
+            <section>
+              <div class="d-flex align-items-center" style="height: 100vh;">
+                <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 27rem;">
+                  <div class="card-body">
+                    <h5 class="card-title p-3 m-2 h1" style="letter-spacing: 2px;" th:text="${title}"></h5>
+                    <form th:action="@{/note/changeCategory}" method="post" th:object="${note}">
+                      <input type="hidden" th:field="*{id}">
+                      <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <input th:field="*{category.name}" type="text" autocomplete="off" class="form-control" id="category">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

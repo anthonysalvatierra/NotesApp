@@ -1,0 +1,10 @@
+body {
+    background-image: url('images/fondo-dashboard.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    height: 100vh;
+}
+.capitalized {
+  text-transform: capitalize;
+}

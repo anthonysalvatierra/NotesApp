@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/dashboard-style.css">
+  </head>
+  <body class="overflow-hidden">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-7"></div>
+          <div class="col-sm-4">
+            <section>
+              <div class="d-flex align-items-center" style="height: 100vh;">
+                <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 27rem;">
+                  <div class="card-body">
+                    <h5 class="card-title p-3 m-2 h1" style="letter-spacing: 2px;" th:text="${title}"></h5>
+                    <form th:action="@{/note/update}" method="post" th:object="${note}">
+                      <div class="mb-3">
+                        <input type="hidden" class="form-control" th:field="*{id}">
+                      </div>
+                      <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" autocomplete="off" class="form-control" id="name" th:field="*{name}">
+                      </div>
+                      <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" autocomplete="off" class="form-control" id="description" th:field="*{description}">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

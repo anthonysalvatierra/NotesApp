@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>NoteApp</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="index-style.css">
+    </head>
+    <body class="overflow-hidden">
+
+        <!------------------------- Navigation --------------------------------------->
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <h2 class="navbar-brand ms-3" style="letter-spacing: 3px;" >NoteApp</h2>
+                    <form class="d-flex ms-auto" th:action="@{/login}" method="post">
+                        <input class="form-control me-2" type="text" autocomplete="off" placeholder="Enter Username" name="username">
+                        <input class="form-control me-2" type="password" autocomplete="off" placeholder="Enter Password" name="password">
+                        <button class="btn btn-primary me-1" type="submit">Login</button>
+                        <a href="/entry/register" class="btn btn-success me-1">Register</a>
+                    </form>
+                </div>
+            </nav>
+        </header>
+
+        <!-------------------------------- Card --------------------------------------------------->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7"></div>
+                <div class="col-sm-4">
+                    <section>
+                        <div class="d-flex align-items-center" style="height: 100vh;">
+                            <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 27rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title p-3 m-2 h1" style="letter-spacing: 2px;">Note App</h5>
+                                    <p class="card-text p-2 text-dark">
+                                        Take the necessary notes easily with our app specialized in notes,
+                                        You can categorize them, archive them, edit them, to have better
+                                        management of all your notes, enjoy it.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+        </div>
+
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
