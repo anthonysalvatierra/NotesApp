@@ -20,9 +20,9 @@ public interface INoteService {
 
     void delete(Note note);
 
-    List<Note> findByNoArchived();
+    List<Note> findByNoArchived(User user);
 
-    List<Note> findByArchived();
+    List<Note> findByArchived(User user);
 
     void update(Note note);
 

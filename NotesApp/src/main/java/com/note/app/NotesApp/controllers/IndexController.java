@@ -1,6 +1,5 @@
 package com.note.app.NotesApp.controllers;
 
-import com.note.app.NotesApp.entities.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +10,8 @@ public class IndexController {
 
     @RequestMapping("/register")
     public String index(Model model){
-        User user = new User();
-        model.addAttribute("user", user);
         model.addAttribute("title", "Register");
-        return "/register";
+        return "register";
     }
 
     @RequestMapping("/enter")

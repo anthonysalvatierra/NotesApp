@@ -115,7 +115,8 @@ public class NoteController {
 
     @RequestMapping("/rediActive")
     public String rediActive(Model model){
-        List<Note> notes = this.noteService.findByNoArchived();
+        User user = findUserDetails();
+        List<Note> notes = this.noteService.findByNoArchived(user);
         model.addAttribute("notes", notes);
 
         return "dashboard";
@@ -128,7 +129,8 @@ public class NoteController {
 
     @RequestMapping("/rediArchived")
     public String rediArchived(Model model){
-        List<Note> notes = this.noteService.findByArchived();
+        User user = findUserDetails();
+        List<Note> notes = this.noteService.findByArchived(user);
         model.addAttribute("notes", notes);
 
         return "dashboard";

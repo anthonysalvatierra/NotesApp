@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,16 +34,25 @@ public class UserController {
     private INoteService noteService;
 
     @RequestMapping("/save")
-    public String save(User user){
-        user.setPassword(this.encoder.encode(user.getPassword()));
+    public String save(@RequestParam String name,
+                       @RequestParam String username,
+                       @RequestParam String password){
+
+        User user = new User();
+
+        user.setName(name);
+        user.setUsername(username);
+        user.setPassword(this.encoder.encode(password));
+
         User userCreated = this.userService.save(user);
+        System.out.println("user created: " + userCreated.getName());
         return "redirect:/";
     }
 
     @RequestMapping("/enter")
     public String enter(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();;
+        String username = authentication.getName();
         User user = this.userService.findByUsername(username);
 
         List<Note> notes = this.noteService.findByUser(user);

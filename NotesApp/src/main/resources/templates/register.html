@@ -13,7 +13,7 @@
             <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
                 <div class="container-fluid">
                     <h2 class="navbar-brand ms-3" style="letter-spacing: 3px;" >NoteApp</h2>
-                    <form class="d-flex ms-auto">
+                    <form class="d-flex ms-auto" th:action="@{/login}" method="post">
                         <input class="form-control me-2" type="text" placeholder="Enter Username">
                         <input class="form-control me-2" type="password" placeholder="Enter Password">
                         <button class="btn btn-primary me-1" type="submit">Login</button>
@@ -32,18 +32,18 @@
                             <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 27rem;">
                                 <div class="card-body">
                                     <h5 class="card-title p-3 m-2 h1" style="letter-spacing: 2px;" th:text="${title}"></h5>
-                                    <form th:action="@{/reg/save}" method="post" th:object="${user}">
+                                    <form th:action="@{/reg/save}" method="post">
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Name</label>
-                                            <input type="text" autocomplete="off" class="form-control" id="name" th:field="*{name}">
+                                            <input type="text" autocomplete="off" class="form-control" id="name" name="name">
                                         </div>
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" autocomplete="off" class="form-control" id="username" th:field="*{username}">
+                                            <input type="text" autocomplete="off" class="form-control" id="username" name="username">
                                         </div>
                                         <div class="mb-3">
                                             <label for="password" class="form-label">Password</label>
-                                            <input type="password" autocomplete="off" class="form-control" id="password" th:field="*{password}">
+                                            <input type="password" autocomplete="off" class="form-control" id="password" name="password">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </form>

@@ -70,14 +70,16 @@ public class NoteServiceImpl  implements INoteService {
     }
 
     @Override
-    public List<Note> findByNoArchived() {
-        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived = false", Note.class)
+    public List<Note> findByNoArchived(User user) {
+        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived = false AND n.user = :user", Note.class)
+                .setParameter("user", user)
                 .getResultList();
     }
 
     @Override
-    public List<Note> findByArchived() {
-        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived=true", Note.class)
+    public List<Note> findByArchived(User user) {
+        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived=true AND n.user = :user", Note.class)
+                .setParameter("user", user)
                 .getResultList();
     }
 
