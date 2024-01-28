@@ -34,12 +34,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <button type="button" class="nav-link text-light btn btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#modalShowCategories">
-                                        Show Categories
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button type="button" class="nav-link text-light btn btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#modalAddCategories">
-                                        Add Categories
+                                        Categories
                                     </button>
                                 </li>
                             </ul>
@@ -70,8 +65,7 @@
                                 <p class="text-muted"><span class="text-dark">Actives:</span> You will see all the notes that are not archived.</p>
                                 <p class="text-muted"><span class="text-dark">Archived:</span> You will be able to see all the notes you have archived.</p>
                                 <p class="text-muted"><span class="text-dark">Create:</span> Create new notes.</p>
-                                <p class="text-muted"><span class="text-dark">Show Categories:</span> You can see the different categories that are available.</p>
-                                <p class="text-muted"><span class="text-dark">Add Category:</span> You can insert your personalized categories.</p>
+                                <p class="text-muted"><span class="text-dark">Categories:</span> You can see the different categories that are available and filter by category.</p>
                             </div>
                         </div>
                     </div>
@@ -100,9 +94,27 @@
                                             <td th:text="${iterator.index} + 1"></td>
                                             <td th:text="${note.name}"></td>
                                             <td>
-                                                <button class="btn btn-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#window">Click To See Description</button>
+                                                <!------------------------------ Button for modals --------------------->
+                                                <button type="button" class="nav-link text-primary btn btn-secondary bn-sm" data-bs-toggle="modal" th:data-bs-target="'#modal' + ${iterator.index}">
+                                                    Click to see description
+                                                </button>
 
-                                                <div id="window" class="collapse" th:text="${note.description}"></div>
+                                                <!--------------------------------------- Modal for each description   ----------------------------------------------->
+                                                <div class="modal fade modal-lg" th:id="'modal' + ${iterator.index}" tabindex="-1" aria-labelledby="modalCreateIterator1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="modalCreateIterator1">Description</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div th:text="${note.description}"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!------------------------------ end of modal ---------------------------------------------------->
+
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-sm" th:href="@{/note/edit/} + ${note.id}">edit</a>
@@ -171,7 +183,6 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
-                                    <th>...</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,41 +191,10 @@
                                     <td class="capitalized text-dark">
                                         <a class="btn btn-secondary btn-sm" th:href="@{/note/filter/} + ${category.id}" th:text="${category.name}"></a>
                                     </td>
-                                    <td>
-                                        <a class="btn btn-danger btn-sm" th:href="@{/category/delete/} + ${category.id}">delete</a>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-            </div>
-        </div>
-    </div>
-    <!------------------------------------------------- Modal Add Category --------------------------------------------------------->
-    <div class="modal fade modal-lg" id="modalAddCategories" tabindex="-1" aria-labelledby="addCategories" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form th:action="@{/category/save}" method="post">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addCategories">Category</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="mb-3 col">
-                                        <label for="nameCategory" class="form-label">Name</label>
-                                        <input autocomplete="off" type="text" class="form-control"  name="name" id="nameCategory" placeholder="Name">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
