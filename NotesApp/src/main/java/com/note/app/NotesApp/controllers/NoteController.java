@@ -6,6 +6,7 @@ import com.note.app.NotesApp.entities.User;
 import com.note.app.NotesApp.services.ICategoryService;
 import com.note.app.NotesApp.services.INoteService;
 import com.note.app.NotesApp.services.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,14 +33,16 @@ public class NoteController {
 
     @RequestMapping("/save")
     public String save(Model model, @RequestParam String name,
-                                    @RequestParam String category,
-                                    @RequestParam String description){
+                                    @RequestParam String description, HttpServletRequest request){
 
         Note note = new Note();
         note.setName(name);
         note.setDescription(description);
+
+        String nameCategory = request.getParameter("category");
+
         Category categoryParse = new Category();
-        categoryParse.setName(category);
+        categoryParse.setName(nameCategory);
         User user = findUserDetails();
         note.setUser(user);
         Note noteCreated;
@@ -47,13 +50,13 @@ public class NoteController {
         boolean isNameInCategory = this.categoryService.findAll()
                 .stream().anyMatch(c -> c.getName().equals(categoryParse.getName()));
 
-        if(!(isNameInCategory) && !(category.equalsIgnoreCase(""))){
-            this.categoryService.save(categoryParse);
-            note.setCategory(categoryParse);
+        if(!(isNameInCategory)){
+            note.setCategory(null);
             noteCreated = this.noteService.save(note);
+
         }else{
 
-            Category categoryFound = this.categoryService.findByName(category);
+            Category categoryFound = this.categoryService.findByName(nameCategory);
             note.setCategory(categoryFound);
             noteCreated = this.noteService.save(note);
         }
@@ -90,6 +93,15 @@ public class NoteController {
     public String unarchived(@PathVariable String id){
         Note note = this.noteService.findById(Long.parseLong(id));
         note.setArchived(false);
+        this.noteService.save(note);
+
+        return "redirect:/note/redi";
+    }
+
+    @RequestMapping("/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable String id){
+        Note note = this.noteService.findById(Long.parseLong(id));
+        note.setCategory(null);
         this.noteService.save(note);
 
         return "redirect:/note/redi";
@@ -189,18 +201,6 @@ public class NoteController {
         this.noteService.update(note);
 
         return "redirect:/note/redi";
-    }
-
-    @RequestMapping("/deleteCategory/{id}")
-    public String deleteCategory(@PathVariable String id, Model model){
-
-        Note note = this.noteService.findById(Long.parseLong(id));
-        note.setCategory(null);
-        this.noteService.update(note);
-        model.addAttribute("note", note);
-
-        return "redirect:/note/redi";
-
     }
 
     @RequestMapping("/filter/{id}")

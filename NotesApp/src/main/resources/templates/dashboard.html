@@ -100,7 +100,7 @@
                                                 </button>
 
                                                 <!--------------------------------------- Modal for each description   ----------------------------------------------->
-                                                <div class="modal fade modal-lg" th:id="'modal' + ${iterator.index}" tabindex="-1" aria-labelledby="modalCreateIterator1" aria-hidden="true">
+                                                <div class="modal fade" th:id="'modal' + ${iterator.index}" tabindex="-1" aria-labelledby="modalCreateIterator1" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -108,7 +108,14 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div th:text="${note.description}"></div>
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        <div class="mb-3 col">
+                                                                            Category: <span th:text="${note.category?.name}"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div th:text="${note?.description}"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -152,7 +159,12 @@
                                     </div>
                                     <div class="mb-3 col">
                                         <label for="category" class="form-label">Category</label>
-                                        <input autocomplete="off" type="text" class="form-control capitalized" value="" name="category" id="category" placeholder="Category">
+                                        <select id="category" name="category" class="form-select" aria-label="Category">
+                                            <option selected value=""></option>
+                                            <div th:each="category: ${categories}">
+                                                <option th:value="${category.name}" th:text="${category.name}"></option>
+                                            </div>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
