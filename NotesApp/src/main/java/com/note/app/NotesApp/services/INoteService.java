@@ -12,17 +12,15 @@ public interface INoteService {
 
     List<Note> findAll();
 
-    List<Note> findByUser(User user);
+    List<Note> findByUserActives(User user);
+
+    List<Note> findUserByArchived(User user);
 
     Note findById(Long id);
 
     Note findByCategory(Category category);
 
     void delete(Note note);
-
-    List<Note> findByNoArchived(User user);
-
-    List<Note> findByArchived(User user);
 
     void update(Note note);
 

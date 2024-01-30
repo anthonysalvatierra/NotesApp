@@ -14,8 +14,4 @@ public class IndexController {
         return "register";
     }
 
-    @RequestMapping("/enter")
-    public String enter(){
-        return "dashboard";
-    }
 }

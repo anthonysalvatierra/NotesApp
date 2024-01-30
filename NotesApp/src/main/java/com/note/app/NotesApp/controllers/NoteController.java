@@ -71,12 +71,15 @@ public class NoteController {
         Note note = (Note) model.getAttribute("note");
         User user = findUserDetails();
 
-        List<Note> notes = this.noteService.findByUser(user);
+        List<Note> notes = this.noteService.findByUserActives(user);
+        List<Note> notesArchived = this.noteService.findUserByArchived(user);
         List<Category> categories = this.categoryService.findAll();
 
         model.addAttribute("categories", categories);
         model.addAttribute("notes", notes);
+        model.addAttribute("notesArchived", notesArchived);
         model.addAttribute("note", note);
+        model.addAttribute("title", "NotesApp");
         return "dashboard";
     }
 
@@ -115,23 +118,9 @@ public class NoteController {
         return "redirect:/note/redi";
     }
 
-    @RequestMapping("/all")
-    public String all(){
-        return "redirect:/note/redi";
-    }
-
     @RequestMapping("/actives")
     public String actives(Model model){
-        return "redirect:/note/rediActive";
-    }
-
-    @RequestMapping("/rediActive")
-    public String rediActive(Model model){
-        User user = findUserDetails();
-        List<Note> notes = this.noteService.findByNoArchived(user);
-        model.addAttribute("notes", notes);
-
-        return "dashboard";
+        return "redirect:/note/redi";
     }
 
     @RequestMapping("/archived")
@@ -142,10 +131,16 @@ public class NoteController {
     @RequestMapping("/rediArchived")
     public String rediArchived(Model model){
         User user = findUserDetails();
-        List<Note> notes = this.noteService.findByArchived(user);
-        model.addAttribute("notes", notes);
+        Note note = new Note();
 
-        return "dashboard";
+        List<Note> notes = this.noteService.findUserByArchived(user);
+        List<Category> categories = this.categoryService.findAll();
+
+        model.addAttribute("notesArchived", notes);
+        model.addAttribute("categories", categories);
+        model.addAttribute("title", "NotesApp");
+
+        return "archived";
     }
 
     @RequestMapping("/addCategory/{id}")
@@ -155,6 +150,7 @@ public class NoteController {
 
         model.addAttribute("note", note);
         model.addAttribute("categories", categories);
+        model.addAttribute("title", "Add Category");
 
         return "addCategory";
     }
@@ -192,6 +188,7 @@ public class NoteController {
     public String edit(@PathVariable String id, Model model){
         Note note = this.noteService.findById(Long.parseLong(id));
         model.addAttribute("note", note);
+        model.addAttribute("title", "Edit");
 
         return "edit";
     }
@@ -215,9 +212,12 @@ public class NoteController {
         Category category = this.categoryService.findById(Long.parseLong(id));
         List<Category> categories = this.categoryService.findAll();
         List<Note> notes = this.noteService.findAllByCategory(category);
+        List<Note> notesArchived = this.noteService.findUserByArchived(findUserDetails());
 
         model.addAttribute("categories", categories);
         model.addAttribute("notes", notes);
+        model.addAttribute("notesArchived", notesArchived);
+        model.addAttribute("title", "NotesApp");
 
         return "dashboard";
     }

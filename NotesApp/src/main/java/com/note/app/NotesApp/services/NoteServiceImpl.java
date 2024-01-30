@@ -34,8 +34,15 @@ public class NoteServiceImpl  implements INoteService {
     }
 
     @Override
-    public List<Note> findByUser(User user) {
-        return this.em.createQuery("SELECT n FROM Note n WHERE n.user.id = :id", Note.class)
+    public List<Note> findByUserActives(User user) {
+        return this.em.createQuery("SELECT n FROM Note n WHERE n.user.id = :id AND n.archived = false", Note.class)
+                .setParameter("id", user.getId())
+                .getResultList();
+    }
+
+    @Override
+    public List<Note> findUserByArchived(User user){
+        return this.em.createQuery("SELECT n FROM Note n WHERE n.user.id = :id AND n.archived = true", Note.class)
                 .setParameter("id", user.getId())
                 .getResultList();
     }
@@ -67,20 +74,6 @@ public class NoteServiceImpl  implements INoteService {
     @Override
     public void delete(Note note) {
         this.noteDao.delete(note);
-    }
-
-    @Override
-    public List<Note> findByNoArchived(User user) {
-        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived = false AND n.user = :user", Note.class)
-                .setParameter("user", user)
-                .getResultList();
-    }
-
-    @Override
-    public List<Note> findByArchived(User user) {
-        return this.em.createQuery("SELECT n FROM Note n WHERE n.archived=true AND n.user = :user", Note.class)
-                .setParameter("user", user)
-                .getResultList();
     }
 
     @Override

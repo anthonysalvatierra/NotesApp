@@ -55,14 +55,8 @@ public class UserController {
         String username = authentication.getName();
         User user = this.userService.findByUsername(username);
 
-        List<Note> notes = this.noteService.findByUser(user);
-
-        if(notes == null || notes.size() == 0 ||
-                notes.get(0).getName() == null || notes.get(0).getName().equals("")){
-
-            model.addAttribute("notes", null);
-        }
-
+        List<Note> notes = this.noteService.findByUserActives(user);
+        List<Note> notesArchived = this.noteService.findUserByArchived(user);
 
         List<Category> categories = this.categoryService.findAll();
         Note note = new Note();
@@ -71,6 +65,8 @@ public class UserController {
         model.addAttribute("note", note);
         model.addAttribute("categories", categories);
         model.addAttribute("notes", notes);
+        model.addAttribute("notesArchived", notesArchived);
+        model.addAttribute("title", "NotesApp");
 
         return "dashboard";
     }
