@@ -35,6 +35,10 @@ public class NoteController {
     public String save(Model model, @RequestParam String name,
                                     @RequestParam String description, HttpServletRequest request){
 
+        if(name.equals("") && description.equals("")){
+            return "redirect:/note/redi";
+        }
+
         Note note = new Note();
         note.setName(name);
         note.setDescription(description);
@@ -98,7 +102,7 @@ public class NoteController {
         note.setArchived(false);
         this.noteService.save(note);
 
-        return "redirect:/note/redi";
+        return "redirect:/note/rediArchived";
     }
 
     @RequestMapping("/deleteCategory/{id}")
@@ -156,29 +160,17 @@ public class NoteController {
     }
 
     @RequestMapping("/changeCategory")
-    public String chageCategory(Note note){
+    public String chageCategory(@RequestParam String category, @RequestParam String idNote){
 
-        Note noteFound = this.noteService.findById(note.getId());
-        
-        boolean isCategory = this.categoryService.findAll()
-                .stream().anyMatch(c -> c.getName().equalsIgnoreCase(note.getCategory().getName()));
+        Note noteFound = this.noteService.findById(Long.parseLong(idNote));
 
-        if(isCategory){
-
-            Category category = this.categoryService.findByName(note.getCategory().getName());
-            noteFound.setCategory(category);
-            this.noteService.updateCategory(noteFound);
-
-        }else{
-
-            Category category = new Category();
-            category.setName(note.getCategory().getName());
-            category = this.categoryService.save(category);
-
-            noteFound.setCategory(category);
-            this.noteService.updateCategory(noteFound);
-
+        if(category.equals("")){
+            return "redirect:/note/redi";
         }
+
+        Category categoryFound = this.categoryService.findByName(category);
+        noteFound.setCategory(categoryFound);
+        this.noteService.updateCategory(noteFound);
 
         return "redirect:/note/redi";
 

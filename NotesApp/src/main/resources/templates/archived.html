@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/dashboard-style.css">
   </head>
-  <body class="overflow-auto">
+  <body class="overflow-hidden">
 
   <!------------------------- Navigation --------------------------------------->
   <header>
@@ -22,7 +22,7 @@
                   <a class="nav-link text-light btn btn-secondary ms-5" th:href="@{/note/actives}">Actives</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light btn btn-secondary ms-5" th:href="@{/note/archived}">
+                  <a class="nav-link active text-light btn btn-secondary ms-5" th:href="@{/note/archived}">
                     Archived <span th:if="${notesArchived?.size() != 0}" th:text="'(' + ${notesArchived.size() + ')'}"></span>
                   </a>
                 </li>
