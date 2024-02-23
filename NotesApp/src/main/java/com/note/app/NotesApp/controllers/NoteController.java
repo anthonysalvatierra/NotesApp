@@ -140,6 +140,7 @@ public class NoteController {
         List<Note> notes = this.noteService.findUserByArchived(user);
         List<Category> categories = this.categoryService.findAll();
 
+        model.addAttribute("note", note);
         model.addAttribute("notesArchived", notes);
         model.addAttribute("categories", categories);
         model.addAttribute("title", "NotesApp");

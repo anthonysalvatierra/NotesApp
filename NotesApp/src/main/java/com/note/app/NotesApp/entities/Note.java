@@ -11,6 +11,8 @@ public class Note {
     private Long id;
 
     private String name;
+
+    @Column(length = 10000)
     private String description;
 
     @ManyToOne

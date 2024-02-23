@@ -9,211 +9,202 @@
   <body class="overflow-hidden">
 
   <!------------------------- Navigation --------------------------------------->
-  <header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <div class="container-fluid">
-            <h1 class="navbar-brand text-light" style="letter-spacing: 2px;">Note App</h1>
+    <header>
+      <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+              <h1 class="navbar-brand text-light" style="letter-spacing: 2px;">Note App</h1>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link text-light btn btn-secondary ms-5" th:href="@{/note/actives}">Actives</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active text-light btn btn-secondary ms-5" th:href="@{/note/archived}">
-                    Archived <span th:if="${notesArchived?.size() != 0}" th:text="'(' + ${notesArchived.size() + ')'}"></span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <button type="button" class="nav-link text-light btn btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#modalCreate">
-                    Create
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button type="button" class="nav-link text-light btn btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#modalShowCategories">
-                    Categories
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <form class="d-flex ms-auto" th:action="@{/logout}" method="post" id="logoutForm">
-          <button onclick="document.getElementById('logoutForm').submit();" class="btn btn-primary me-1" type="submit">Logout</button>
-        </form>
-      </div>
-    </nav>
-  </header>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link text-light btn btn-secondary ms-5" th:href="@{/note/actives}">Actives</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active text-light btn btn-secondary ms-5" th:href="@{/note/archived}">
+                      Archived <span th:if="${notesArchived?.size() != 0}" th:text="'(' + ${notesArchived.size() + ')'}"></span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link text-light btn btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#modalCreate">
+                      Create
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <div class="dropdown ms-5">
+                      <a class="nav-link text-light btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categories
+                      </a>
 
-  <!-------------------------------- Card Description --------------------------------------------------->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        <section>
-          <div class="d-flex align-items-center" style="height: 100vh;">
-            <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 50rem;">
-              <nav class="navbar navbar-light">
-                <div class="container-fluid">
-                  <h1 class="navbar-brand h1" style="letter-spacing: 1px;">Description</h1>
-                </div>
-              </nav>
-              <div>
-                <p class="text-muted"><span class="text-dark">Actives:</span> You will see all the notes that are not archived.</p>
-                <p class="text-muted"><span class="text-dark">Archived:</span> You will be able to see all the notes you have archived.</p>
-                <p class="text-muted"><span class="text-dark">Create:</span> Create new notes.</p>
-                <p class="text-muted"><span class="text-dark">Categories:</span> You can see the different categories that are available and filter by category.</p>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li th:each="category: ${categories}">
+                          <a class="dropdown-item" th:href="@{/note/filter/} + ${category.id}" th:text="${category.name}"></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-      <!-------------------------------- Card Table --------------------------------------------------->
-      <div class="col-sm-8">
-        <section>
-          <div class="d-flex align-items-center" style="height: 100vh;">
-            <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 50rem;">
-              <nav class="navbar navbar-light">
-                <div class="container-fluid">
-                  <h1 class="navbar-brand h1" style="letter-spacing: 1px;">Notes</h1>
-                </div>
-              </nav>
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="note, iterator: ${notesArchived}">
-                  <td th:text="${iterator.index} + 1"></td>
-                  <td th:text="${note.name}"></td>
-                  <td>
-                    <!------------------------------ Button for modals --------------------->
-                    <button type="button" class="nav-link text-primary btn btn-secondary bn-sm" data-bs-toggle="modal" th:data-bs-target="'#modal' + ${iterator.index}">
-                      Click to see description
-                    </button>
+          </nav>
+          <form class="d-flex ms-auto" th:action="@{/logout}" method="post" id="logoutForm">
+            <button onclick="document.getElementById('logoutForm').submit();" class="btn btn-primary me-1" type="submit">Logout</button>
+          </form>
+        </div>
+      </nav>
+    </header>
 
-                    <!--------------------------------------- Modal for each description   ----------------------------------------------->
-                    <div class="modal fade" th:id="'modal' + ${iterator.index}" tabindex="-1" aria-labelledby="modalCreateIterator1" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="modalCreateIterator1">Description</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container">
-                              <div class="row">
-                                <div class="mb-3 col">
-                                  Category: <span th:text="${note.category?.name}"></span>
+    <!-------------------------------- Card Description --------------------------------------------------->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <section>
+            <div class="d-flex align-items-center" style="height: 100vh;">
+              <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 50rem;">
+                <nav class="navbar navbar-light">
+                  <div class="container-fluid">
+                    <h1 class="navbar-brand h1" style="letter-spacing: 1px;">Description</h1>
+                  </div>
+                </nav>
+                <div>
+                  <p class="text-muted"><span class="text-dark">Actives:</span> You will see all the notes that are not archived.</p>
+                  <p class="text-muted"><span class="text-dark">Archived:</span> You will be able to see all the notes you have archived.</p>
+                  <p class="text-muted"><span class="text-dark">Create:</span> Create new notes.</p>
+                  <p class="text-muted"><span class="text-dark">Categories:</span> You can see the different categories that are available and filter by category.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-------------------------------- Card Table --------------------------------------------------->
+        <div class="col-sm-8">
+          <section>
+            <div class="d-flex align-items-center" style="height: 100vh;">
+              <div class="card mx-auto shadow-lg p-4 mb-4 bg-white" style="width: 50rem;">
+
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        <h1 class="navbar-brand h1" style="letter-spacing: 1px;">
+                          Notes <span th:if="${notesArchived?.size() != 0}" th:text="'(' + ${notesArchived?.size() + ')'}"></span>
+                        </h1>
+                      </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                      <div class="accordion-body">
+
+                        <!----------------------------------------------------- Table ----------------------------------------------------------------->
+                        <table class="table table-hover">
+                          <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr th:each="note, iterator: ${notesArchived}">
+                            <td th:text="${iterator.index} + 1"></td>
+                            <td th:text="${note.name}"></td>
+                            <td>
+                              <!------------------------------ Button for modals --------------------->
+                              <button type="button" class="nav-link text-primary btn btn-secondary bn-sm" data-bs-toggle="modal" th:data-bs-target="'#modal' + ${iterator.index}">
+                                Click to see description
+                              </button>
+
+                              <!--------------------------------------- Modal for each description   ----------------------------------------------->
+                              <div class="modal fade" th:id="'modal' + ${iterator.index}" tabindex="-1" aria-labelledby="modalCreateIterator1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="modalCreateIterator1">Description</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="container">
+                                        <div class="row">
+                                          <div class="mb-3 col">
+                                            Category: <span th:text="${note.category?.name}"></span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div th:text="${note?.description}"></div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                      <a class="btn btn-primary btn-sm" th:href="@{/note/edit/} + ${note.id}">Edit</a>
+                                      <a class="btn btn-danger btn-sm" th:href="@{/note/delete/} + ${note.id}">Delete</a>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div th:text="${note?.description}"></div>
-                          </div>
-                          <div class="modal-footer"></div>
-                        </div>
+                              <!------------------------------ end of modal ---------------------------------------------------->
+
+                            </td>
+                            <td class="d-flex justify-content-center">
+                              <a th:if="${note.category?.name == null}" class="btn btn-info btn-sm me-2" th:href="@{/note/addCategory/} + ${note.id}">Add Category</a>
+                              <a th:if="${note.category?.name != null}" class="btn btn-danger btn-sm me-2" th:href="@{/note/deleteCategory/} + ${note.id}">Delete Category</a>
+                              <a th:if="${!note.archived}" class="btn btn-secondary btn-sm" th:href="@{/note/archived/} + ${note.id}">Archived</a>
+                              <a th:if="${note.archived}" class="btn btn-secondary btn-sm" th:href="@{/note/unarchived/} + ${note.id}">Unarchived</a>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+
                       </div>
                     </div>
-                    <!------------------------------ end of modal ---------------------------------------------------->
-
-                  </td>
-                  <td>
-                    <a class="btn btn-primary btn-sm" th:href="@{/note/edit/} + ${note.id}">edit</a>
-                    <a th:if="${note.category?.name == null}" class="btn btn-info btn-sm" th:href="@{/note/addCategory/} + ${note.id}">add category</a>
-                    <a th:if="${note.category?.name != null}" class="btn btn-danger btn-sm" th:href="@{/note/deleteCategory/} + ${note.id}">delete category</a>
-                    <a th:if="${!note.archived}" class="btn btn-secondary btn-sm" th:href="@{/note/archived/} + ${note.id}">archived</a>
-                    <a th:if="${note.archived}" class="btn btn-secondary btn-sm" th:href="@{/note/unarchived/} + ${note.id}">unarchived</a>
-                    <a class="btn btn-danger btn-sm" th:href="@{/note/delete/} + ${note.id}">delete</a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-
-  <!------------------------------------------------- Modal Create --------------------------------------------------------->
-  <div class="modal fade modal-lg" id="modalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form th:action="@{/note/save}" method="post">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Note</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="container">
-              <div class="row">
-                <div class="mb-3 col">
-                  <label for="nameNote" class="form-label">Tag</label>
-                  <input type="text" autocomplete="off" class="form-control"  name="name" id="nameNote" placeholder="Tag">
-                </div>
-                <div class="mb-3 col">
-                  <label for="category" class="form-label">Category</label>
-                  <select id="category" name="category" class="form-select" aria-label="Category">
-                    <option selected value=""></option>
-                    <div th:each="category: ${categories}">
-                      <option th:value="${category.name}" th:text="${category.name}"></option>
-                    </div>
-                  </select>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea autocomplete="off" class="form-control" name="description" id="description" rows="3"></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-  <!------------------------------------------------- Modal Show Categories --------------------------------------------------------->
-  <div class="modal fade" id="modalShowCategories" tabindex="-1" aria-labelledby="showCategories" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="showCategories">Categories</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <table class="table table-hover overFlow-auto">
-            <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Name</th>
-              <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category: ${categories}">
-              <td></td>
-              <td class="capitalized text-dark" th:text="${category.name}"></td>
-              <td class="capitalized">
-                <a class="btn btn-secondary btn-sm" th:href="@{/note/filter/} + ${category.id}">Filter</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer"></div>
-      </div>
-    </div>
-  </div>
 
-  <script src="js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!------------------------------------------------- Modal Create --------------------------------------------------------->
+    <div class="modal fade modal-lg" id="modalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form th:action="@{/note/save}" method="post">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Note</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="mb-3 col">
+                    <label for="nameNote" class="form-label">Tag</label>
+                    <input type="text" autocomplete="off" class="form-control"  name="name" id="nameNote" placeholder="Tag">
+                  </div>
+                  <div class="mb-3 col">
+                    <label for="category" class="form-label">Category</label>
+                    <select id="category" name="category" class="form-select" aria-label="Category">
+                      <option selected value=""></option>
+                      <div th:each="category: ${categories}">
+                        <option th:value="${category.name}" th:text="${category.name}"></option>
+                      </div>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea autocomplete="off" class="form-control" name="description" id="description" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

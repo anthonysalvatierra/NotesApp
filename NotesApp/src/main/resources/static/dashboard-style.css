@@ -8,3 +8,8 @@ body {
 .capitalized {
   text-transform: capitalize;
 }
+
+.accordion-body {
+  max-height: 350px;
+  overflow: auto;
+}
